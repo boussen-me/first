@@ -1,0 +1,16 @@
+{
+  "name": "sonar-test-project",
+  "version": "1.0.0",
+  "description": "A simple productivity dashboard for testing SonarQube integration",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "demo",
+    "sonar",
+    "dashboard"
+  ],
+  "author": "",
+  "license": "ISC"
+}

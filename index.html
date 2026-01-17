@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusFlow | Productivity Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <h1>FocusFlow</h1>
+            </div>
+            <div class="user-profile">
+                <span>Demo User</span>
+                <div class="avatar">DU</div>
+            </div>
+        </header>
+
+        <main class="dashboard-grid">
+            <!-- Stats Section -->
+            <section class="card stats-card">
+                <h2>Overview</h2>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Tasks</span>
+                        <span class="stat-value" id="total-tasks">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Pending</span>
+                        <span class="stat-value text-orange" id="pending-tasks">0</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Task Input Section -->
+            <section class="card input-card">
+                <h2>Add New Task</h2>
+                <div class="input-group">
+                    <input type="text" id="task-input" placeholder="What needs to be done?">
+                    <button id="add-btn">Add Task</button>
+                </div>
+            </section>
+
+            <!-- Tasks List Section -->
+            <section class="card list-card">
+                <div class="card-header">
+                    <h2>My Tasks</h2>
+                    <button id="clear-all" class="text-btn">Clear All</button>
+                </div>
+                <ul id="task-list" class="task-list">
+                    <!-- Tasks will be injected here -->
+                </ul>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
