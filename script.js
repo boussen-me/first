@@ -23,8 +23,8 @@ function init() {
 // Code Smell: Duplicated Logic in these two calculation functions
 function calculateTotal() {
     let count = 0;
-    for(let i = 0; i < tasks.length; i++) {
-        if(tasks[i]) {
+    for (let i = 0; i < tasks.length; i++) {
+        if (tasks[i]) {
             count++;
         }
     }
@@ -33,8 +33,8 @@ function calculateTotal() {
 
 function calculatePending() { // Very similar loop to above (Cognitive complexity/Duplication)
     let count = 0;
-    for(let i = 0; i < tasks.length; i++) {
-        if(tasks[i]) {
+    for (let i = 0; i < tasks.length; i++) {
+        if (tasks[i]) {
             count++;
         }
     }
@@ -46,18 +46,26 @@ function calculatePending() { // Very similar loop to above (Cognitive complexit
 function updateStats() {
     // Re-doing logic properly here but keeping the "smelly" functions unused or partly used
     totalTasksElem.textContent = tasks.length;
-    
+
+    // Calculate pending tasks (not completed)
+    let pendingCount = 0;
+    for (let i = 0; i < tasks.length; i++) {
+        if (!tasks[i].completed) {
+            pendingCount++;
+        }
+    }
+
     // Code Smell: Magic number and loose equality
-    if (tasks.length == 0) { 
+    if (pendingCount == 0) {
         pendingTasksElem.textContent = "0";
     } else {
-        pendingTasksElem.textContent = tasks.length;
+        pendingTasksElem.textContent = pendingCount;
     }
 }
 
 function addTask() {
     const text = taskInput.value;
-    
+
     // Code Smell: Loose equality check
     if (text == "") {
         alert("Please enter a task!");
@@ -67,6 +75,7 @@ function addTask() {
     const newTask = {
         id: Date.now(),
         text: text,
+        completed: false, // New property
         createdAt: new Date()
     };
 
@@ -79,32 +88,44 @@ function addTask() {
 function deleteTask(id) {
     // Code Smell: Inefficient filtering/loose equality
     const newTasks = [];
-    for(let i=0; i<tasks.length; i++) {
-        if(tasks[i].id != id) {
+    for (let i = 0; i < tasks.length; i++) {
+        if (tasks[i].id != id) {
             newTasks.push(tasks[i]);
         }
     }
     tasks = newTasks;
-    
+
+    renderTasks();
+    updateStats();
+}
+
+function toggleTask(id) {
+    for (let i = 0; i < tasks.length; i++) {
+        if (tasks[i].id == id) {
+            tasks[i].completed = !tasks[i].completed;
+            break;
+        }
+    }
     renderTasks();
     updateStats();
 }
 
 function renderTasks() {
     taskList.innerHTML = "";
-    
+
     // Code Smell: 'var' usage in loop
     for (var i = 0; i < tasks.length; i++) {
         const t = tasks[i];
         const li = document.createElement('li');
-        li.className = 'task-item';
-        
+        li.className = t.completed ? 'task-item completed' : 'task-item';
+
         // Code Smell: innerHTML usage (security risk in some contexts, Sonar flags this)
         li.innerHTML = `
+            <input type="checkbox" class="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask(${t.id})">
             <span class="task-text">${t.text}</span>
             <button class="delete-btn" onclick="deleteTask(${t.id})">Delete</button>
         `;
-        
+
         taskList.appendChild(li);
     }
 }
@@ -112,7 +133,7 @@ function renderTasks() {
 // Event Listeners
 addBtn.addEventListener('click', addTask);
 
-taskInput.addEventListener('keypress', function(e) {
+taskInput.addEventListener('keypress', function (e) {
     // Code Smell: Magic number 13 (Enter key)
     if (e.which == 13) {
         addTask();
